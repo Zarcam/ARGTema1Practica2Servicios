@@ -14,7 +14,8 @@ import androidx.core.app.NotificationCompat
 class ARGPrimeService : Service() {
     private val CHANNEL_ID = "ForegroundPrimeServiceChannel"
     private lateinit var manager: NotificationManager
-    private var enable: Boolean = false
+    private val MAYOR_INT: Int = Integer.MAX_VALUE/175000
+
     override fun onCreate() {
         super.onCreate()
     }
@@ -33,7 +34,7 @@ class ARGPrimeService : Service() {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Servicio calculando primos en primer plano")
+            .setContentTitle("Numeros Primos")
             .setContentText(input)
             .setContentIntent(pendingIntent)
             .build()
@@ -43,21 +44,39 @@ class ARGPrimeService : Service() {
     }
 
     private fun run() {
-        enable = true
         Thread{
-            while(enable){
-                Log.e("Hola", "Running", )
-                try{
-                    Thread.sleep(2000)
-                }catch (ex: InterruptedException){
-                    ex.printStackTrace()
+            try {
+                calcPrimesFrom(MAYOR_INT).forEach {
+                    Log.d("Primos", it.toString())
                 }
+            }catch(ex: Throwable){
+                Log.d("Hola", ex.message.toString())
             }
         }.start()
     }
 
+    private fun calcPrimesFrom(n: Int): List<Int>{
+        var primes = ArrayList<Int>()
+
+        for(i in 2..n){
+            if(isPrime(i, i-1)){
+                primes.add(i)
+            }
+        }
+        return primes
+    }
+
+    private fun isPrime(n: Int, div: Int): Boolean{
+        if(div == 1){
+            return true
+        }else if(n % div == 0){
+            return false
+        }else{
+            return isPrime(n, div-1)
+        }
+    }
+
     override fun onDestroy() {
-        enable = false
         super.onDestroy()
     }
 

@@ -18,14 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<Button>(R.id.calcPrimosBoton).setOnClickListener{
-            /*var listaPrimos: ArrayList<Int> = ArrayList()
-            listaPrimos.addAll(calcPrimesFrom(MAYOR_INT))
-
-            listaPrimos.forEach {primo: Int ->
-                Log.d("Primos", primo.toString())
-            }*/
             val serviceIntent = Intent(this, ARGPrimeService::class.java)
-            serviceIntent.putExtra("inputExtra", "Hola que tal")
+            serviceIntent.putExtra("inputExtra", "Calculando numeros primos en un servicio de primer plano")
 
             ContextCompat.startForegroundService(this, serviceIntent)
         }
