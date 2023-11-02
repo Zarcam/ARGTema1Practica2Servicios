@@ -29,25 +29,4 @@ class MainActivity : AppCompatActivity() {
             it.setBackgroundColor(color)
         }
     }
-
-    private fun calcPrimesFrom(n: Int): List<Int>{
-        var primes = ArrayList<Int>()
-
-        for(i in 2..n){
-            if(isPrime(i, i-1)){
-                primes.add(i)
-            }
-        }
-        return primes
-    }
-
-    private fun isPrime(n: Int, div: Int): Boolean{
-        if(div == 1){
-            return true
-        }else if(n % div == 0){
-            return false
-        }else{
-            return isPrime(n, div-1)
-        }
-    }
 }

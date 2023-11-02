@@ -16,10 +16,6 @@ class ARGPrimeService : Service() {
     private lateinit var manager: NotificationManager
     private val MAYOR_INT: Int = Integer.MAX_VALUE/175000
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
     private fun createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val serviceChannel = NotificationChannel(CHANNEL_ID, "Foreground Prime Service Channel", NotificationManager.IMPORTANCE_DEFAULT)
@@ -76,9 +72,6 @@ class ARGPrimeService : Service() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
