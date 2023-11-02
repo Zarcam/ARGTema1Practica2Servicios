@@ -18,10 +18,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<Button>(R.id.calcPrimosBoton).setOnClickListener{
-            val serviceIntent = Intent(this, ARGPrimeService::class.java)
-            serviceIntent.putExtra("inputExtra", "Calculando numeros primos en un servicio de primer plano")
+            val serviceIntent = Intent(this, ARGPrimeBackgroundService::class.java)
 
-            ContextCompat.startForegroundService(this, serviceIntent)
+            startService(serviceIntent)
+            //val serviceIntent = Intent(this, ARGPrimeService::class.java)
+
+            //serviceIntent.putExtra("inputExtra", "Calculando numeros primos en un servicio de primer plano")
+
+            //ContextCompat.startForegroundService(this, serviceIntent)
         }
 
         findViewById<Button>(R.id.cambiarColorBoton).setOnClickListener{

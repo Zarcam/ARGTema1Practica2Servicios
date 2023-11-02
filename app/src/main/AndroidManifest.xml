@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,12 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tema1Practica2Servicios"
         tools:targetApi="31">
-
+        <service
+            android:name=".ARGPrimeBackgroundService"
+            android:enabled="true"
+            android:exported="true"></service>
         <service
             android:name=".ARGPrimeService"
             android:enabled="true"
             android:exported="true"
-            android:foregroundServiceType="specialUse"/>
+            android:foregroundServiceType="specialUse" />
 
         <activity
             android:name=".MainActivity"
