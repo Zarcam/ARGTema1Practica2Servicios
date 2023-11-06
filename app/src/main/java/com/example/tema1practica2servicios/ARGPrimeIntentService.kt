@@ -1,19 +1,13 @@
 package com.example.tema1practica2servicios
 
-import android.app.Service
+import android.app.IntentService
 import android.content.Intent
-import android.os.IBinder
 import android.util.Log
 
-class ARGPrimeBackgroundService : Service() {
+class ARGPrimeIntentService : IntentService("ARGPrimeIntentService") {
     private val MAYOR_INT: Int = Integer.MAX_VALUE/175000
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        this.run()
-        return START_NOT_STICKY
-    }
-
-    private fun run(){
+    override fun onHandleIntent(intent: Intent?) {
         Thread{
             calcPrimesFrom(MAYOR_INT).forEach{
                 Log.d("Primos", it.toString())
@@ -40,9 +34,5 @@ class ARGPrimeBackgroundService : Service() {
         }else{
             return isPrime(n, div-1)
         }
-    }
-
-    override fun onBind(intent: Intent): IBinder? {
-        return null
     }
 }

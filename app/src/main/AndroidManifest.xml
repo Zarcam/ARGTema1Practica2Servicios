@@ -15,9 +15,12 @@
         android:theme="@style/Theme.Tema1Practica2Servicios"
         tools:targetApi="31">
         <service
+            android:name=".ARGPrimeIntentService"
+            android:exported="false"></service>
+        <service
             android:name=".ARGPrimeBackgroundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".ARGPrimeService"
             android:enabled="true"

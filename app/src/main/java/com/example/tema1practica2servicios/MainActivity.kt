@@ -11,14 +11,13 @@ import androidx.core.content.ContextCompat
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
-    private val MAYOR_INT: Int = Integer.MAX_VALUE/40000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         findViewById<Button>(R.id.calcPrimosBoton).setOnClickListener{
-            val serviceIntent = Intent(this, ARGPrimeBackgroundService::class.java)
+            val serviceIntent = Intent(this, ARGPrimeIntentService::class.java)
 
             startService(serviceIntent)
             //val serviceIntent = Intent(this, ARGPrimeService::class.java)
