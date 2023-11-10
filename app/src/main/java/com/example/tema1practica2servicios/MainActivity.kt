@@ -12,6 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -34,12 +37,17 @@ class MainActivity : AppCompatActivity() {
             })
             workManager.enqueue(peticion)
 
+            EventBus.getDefault().register(this)
+
+            //INTENT SERVICE
             //val serviceIntent = Intent(this, ARGPrimeIntentService::class.java)
             //startService(serviceIntent)
 
+            //BACKGROUND SERVICE
             //val serviceIntent = Intent(this, ARGPrimeBackgroundService::class.java)
             //startService(serviceIntent)
 
+            //FOREGROUND SERVICE
             //val serviceIntent = Intent(this, ARGPrimeService::class.java)
             //serviceIntent.putExtra("inputExtra", "Calculando numeros primos en un servicio de primer plano")
             //ContextCompat.startForegroundService(this, serviceIntent)
@@ -50,4 +58,10 @@ class MainActivity : AppCompatActivity() {
             it.setBackgroundColor(color)
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: PrimeEvent){
+        Log.d("PrimeEvent", event.getMessage())
+    }
+
 }

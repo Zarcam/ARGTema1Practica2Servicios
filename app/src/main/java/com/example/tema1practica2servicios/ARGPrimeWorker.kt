@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import org.greenrobot.eventbus.EventBus
 
 class ARGPrimeWorker(context: Context, workerParams: WorkerParameters): Worker(context, workerParams) {
     private val MAYOR_INT = Integer.MAX_VALUE/275000;
 
     override fun doWork(): Result {
-        return Result.success(workDataOf(Pair("Primos", calcPrimesFrom(MAYOR_INT))))
+        val resultado = calcPrimesFrom(MAYOR_INT)
+        EventBus.getDefault().post(PrimeEvent("Se han calculado los primos"))
+        return Result.success(workDataOf(Pair("Primos", resultado)))
     }
 
 
