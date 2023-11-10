@@ -1,11 +1,15 @@
 package com.example.tema1practica2servicios
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -15,13 +19,29 @@ import androidx.work.WorkRequest
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.w3c.dom.Text
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var receiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        receiver = object: BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val textoBat = findViewById<TextView>(R.id.textoBateria)
+                when(intent?.action){
+                    Intent.ACTION_AIRPLANE_MODE_CHANGED -> textoBat.text = "Modo avion activado"
+                    Intent.ACTION_BATTERY_LOW -> textoBat.text = "Bateria baja"
+                }
+            }
+        }
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_BATTERY_LOW)
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
 
         findViewById<Button>(R.id.calcPrimosBoton).setOnClickListener{
             val workManager: WorkManager = WorkManager.getInstance(this)
@@ -63,5 +83,4 @@ class MainActivity : AppCompatActivity() {
     fun onMessageEvent(event: PrimeEvent){
         Log.d("PrimeEvent", event.getMessage())
     }
-
 }
