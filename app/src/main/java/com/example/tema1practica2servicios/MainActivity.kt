@@ -4,13 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.CallLog
+import android.provider.ContactsContract.CommonDataKinds.Phone
+import android.provider.Telephony
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.work.OneTimeWorkRequestBuilder
@@ -24,6 +30,7 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var receiver: BroadcastReceiver
+    private val READ_CALL_LOG_REQUEST_CODE = 160
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +84,30 @@ class MainActivity : AppCompatActivity() {
             val color = Color.argb(255, Random.nextInt(256), Random.nextInt(256), Random.nextInt(256))
             it.setBackgroundColor(color)
         }
+
+        findViewById<Button>(R.id.verLlamadasButton).setOnClickListener{
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
+                readCalls()
+            }else{
+                ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.READ_CALL_LOG), READ_CALL_LOG_REQUEST_CODE)
+            }
+        }
+    }
+
+    private fun readCalls(){
+        val cr = applicationContext.contentResolver
+
+        val cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null)
+        if(cursor != null){
+            if(cursor.moveToFirst()) {
+                 do{
+                    val numberIndex = cursor.getColumnIndex(CallLog.Calls.NUMBER)
+                    val number = cursor.getString(numberIndex)
+                    Log.d("Ultimas llamadas", number)
+                }while (cursor.moveToNext())
+            }
+        }
+        cursor?.close()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
